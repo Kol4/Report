@@ -7,20 +7,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistogramPanel extends JPanel {
-    private int histogramHeight = 250;
-    private int barWidth = 75;
-    private int barGap = 10;
+public final class HistogramPanel extends JPanel {
 
-    private JPanel barPanel;
-    private JPanel labelPanel;
+    private final JPanel barPanel;
+    private final JPanel labelPanel;
 
-    private List<Bar> bars = new ArrayList<Bar>();
+    private final List<Bar> bars = new ArrayList<Bar>();
 
-    public HistogramPanel() {
+    private HistogramPanel() {
         setBorder(new EmptyBorder(10, 10, 10, 10));
         setLayout(new BorderLayout());
 
+        int barGap = 10;
         barPanel = new JPanel(new GridLayout(1, 0, barGap, 0));
         Border outer = new MatteBorder(1, 1, 1, 1, Color.BLACK);
         Border inner = new EmptyBorder(10, 10, 0, 10);
@@ -34,12 +32,12 @@ public class HistogramPanel extends JPanel {
         add(labelPanel, BorderLayout.PAGE_END);
     }
 
-    public void addHistogramColumn(String label, int value, Color color) {
+    private void addHistogramColumn(String label, int value, Color color) {
         Bar bar = new Bar(label, value, color);
         bars.add(bar);
     }
 
-    public void layoutHistogram() {
+    private void layoutHistogram() {
         barPanel.removeAll();
         labelPanel.removeAll();
 
@@ -51,51 +49,58 @@ public class HistogramPanel extends JPanel {
 
         for (Bar bar : bars) {
             JLabel label = new JLabel(bar.getValue() + "");
-            label.setHorizontalTextPosition(JLabel.CENTER);
-            label.setHorizontalAlignment(JLabel.CENTER);
-            label.setVerticalTextPosition(JLabel.TOP);
-            label.setVerticalAlignment(JLabel.BOTTOM);
-            int barHeight = (bar.getValue() * histogramHeight) / maxValue;
+            label.setHorizontalTextPosition(SwingConstants.CENTER);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setVerticalTextPosition(SwingConstants.TOP);
+            label.setVerticalAlignment(SwingConstants.BOTTOM);
+            int histogramHeight = 250;
+            int barHeight;
+            if (bar.getValue() == 0){
+                barHeight = 0;
+            }else {
+                barHeight = (bar.getValue() * histogramHeight) / maxValue;
+            }
+            int barWidth = 75;
             Icon icon = new ColorIcon(bar.getColor(), barWidth, barHeight);
             label.setIcon(icon);
             barPanel.add(label);
 
             JLabel barLabel = new JLabel(bar.getLabel());
-            barLabel.setHorizontalAlignment(JLabel.CENTER);
+            barLabel.setHorizontalAlignment(SwingConstants.CENTER);
             labelPanel.add(barLabel);
         }
     }
 
     private class Bar {
-        private String label;
-        private int value;
-        private Color color;
+        private final String label;
+        private final int value;
+        private final Color color;
 
-        public Bar(String label, int value, Color color) {
+        private Bar(String label, int value, Color color) {
             this.label = label;
             this.value = value;
             this.color = color;
         }
 
-        public String getLabel() {
+        private String getLabel() {
             return label;
         }
 
-        public int getValue() {
+        private int getValue() {
             return value;
         }
 
-        public Color getColor() {
+        private Color getColor() {
             return color;
         }
     }
 
-    private class ColorIcon implements Icon {
-        private int shadow = 3;
+    private static class ColorIcon implements Icon {
+        private final int shadow = 3;
 
-        private Color color;
-        private int width;
-        private int height;
+        private final Color color;
+        private final int width;
+        private final int height;
 
         public ColorIcon(Color color, int width, int height) {
             this.color = color;
@@ -118,15 +123,15 @@ public class HistogramPanel extends JPanel {
             g.setColor(color);
             g.fillRect(x, y, width - shadow, height);
             g.setColor(Color.GRAY);
-            g.fillRect(x + width - shadow, y + shadow, shadow, height - shadow);
+            g.fillRect((x + width) - shadow, y + shadow, shadow, height - shadow);
         }
     }
 
-    public void createAndShowGUI(int daily, int usual, int unusual) {
+    static void createAndShowGUI(int daily, int usual, int unusual) {
         HistogramPanel panel = new HistogramPanel();
         panel.addHistogramColumn("Daily", daily, Color.RED);
         panel.addHistogramColumn("Usual", usual, Color.YELLOW);
-        panel.addHistogramColumn("Unusual", unusual, Color.BLUE);
+        panel.addHistogramColumn("Unusual", unusual, Color.CYAN);
         panel.layoutHistogram();
 
         JFrame frame = new JFrame("Histogram Panel");

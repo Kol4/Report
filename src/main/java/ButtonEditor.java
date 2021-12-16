@@ -4,9 +4,9 @@ import javax.swing.JTable;
 import java.awt.Component;
 
 class ButtonEditor extends DefaultCellEditor {
-    private final SimpleTableTest simpleTableTest;
+    private final MainReportTable simpleTableTest;
 
-    ButtonEditor(SimpleTableTest simpleTableTest, JCheckBox checkBox) {
+    ButtonEditor(MainReportTable simpleTableTest, JCheckBox checkBox) {
         super(checkBox);
         this.simpleTableTest = simpleTableTest;
     }

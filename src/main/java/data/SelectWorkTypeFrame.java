@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class Test {
-    private ArrayList<String> infos1;
-    private ArrayList<String> infos2;
-    private ArrayList<String> infos3;
+public class SelectWorkTypeFrame {
+    private ArrayList<String> infos1 = null;
+    private ArrayList<String> infos2 = null;
+    private ArrayList<String> infos3 = null;
 
-    public boolean isShowing = true;
 
-    public Test(Consumer<List> listConsumer1, Consumer<List> listConsumer2, Consumer<List> listConsumer3) {
+    public SelectWorkTypeFrame(Consumer<List> listConsumer1, Consumer<List> listConsumer2, Consumer<List> listConsumer3) {
 
         EventQueue.invokeLater(() -> {
             try {
@@ -25,22 +24,22 @@ public class Test {
                 ex.printStackTrace();
             }
 
-            JFrame frame = new JFrame("Select work type");
+            JFrame frame = new JFrame("Выберите вид работы");
             frame.setLayout(new BorderLayout());
-            JPanel jPanel = new JPanel(new GridLayout(1, 1));
-            frame.add(jPanel, BorderLayout.CENTER);
+            JPanel topPanel = new JPanel(new GridLayout(1, 1));
+            frame.add(topPanel, BorderLayout.CENTER);
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            CheckBoxGroup cg1 = new CheckBoxGroup(new String[]{"Turn on/OFF PC", "Reboot PC", "Setup PC", "Setup network", "Helping users", "Setup computer peripherals"}, "Daily");
-            CheckBoxGroup cg2 = new CheckBoxGroup(new String[]{"Install OS", "Re-install OS", "Drawing up reports", "Data backup", "Connecting and removing users", "Installing new software"}, "Usual");
-            CheckBoxGroup cg3 = new CheckBoxGroup(new String[]{"Onboarding new Admin", "Destroy PC", "Malware", "Fix the coffee machine", "Write a macro in Excel"}, "Unusual");
-            jPanel.add(cg1);
-            jPanel.add(cg2);
-            jPanel.add(cg3);
+            CheckBoxGroup cg1 = new CheckBoxGroup(new String[]{"Запустить/Выключить ПК", "Перезагрузка ПК", "Настройка ПК", "Настройка сети", "Поддержка пользователей", "Настройка компьютерной периферии"}, "Ежедневная");
+            CheckBoxGroup cg2 = new CheckBoxGroup(new String[]{"Установка ОС", "Переустановка ОС", "Составление отчетов", "Востановление данных", "Подключение/Удаление пользователей", "Установка необходимого ПО"}, "Обычная");
+            CheckBoxGroup cg3 = new CheckBoxGroup(new String[]{"Обучение нового персонала", "Уничтожение ПК", "Вредоносное ПО", "Ремонт кофемашины", "Написать макрос в Excel"}, "Внеплановая");
+            topPanel.add(cg1);
+            topPanel.add(cg2);
+            topPanel.add(cg3);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
             JPanel bottomPanel = new JPanel();
-            JButton confirmButton = new JButton("Confirm selected");
+            JButton confirmButton = new JButton("Подтвердить выбор");
             bottomPanel.add(confirmButton);
             bottomPanel.setLayout(new FlowLayout());
             frame.add(bottomPanel, BorderLayout.PAGE_END);
@@ -54,15 +53,13 @@ public class Test {
                     listConsumer2.accept(infos2);
                     listConsumer3.accept(infos3);
                     frame.dispose();
-                    isShowing = false;
                 }
             });
 
         });
     }
 
-    public class CheckBoxGroup extends JPanel {
-        private final JLabel all;
+    public static final class CheckBoxGroup extends JPanel {
         private final ArrayList<JCheckBox> checkBoxes;
 
 
@@ -70,7 +67,7 @@ public class Test {
             checkBoxes = new ArrayList<>(25);
             setLayout(new BorderLayout());
             JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
-            all = new JLabel(workType);
+            JLabel all = new JLabel(workType);
             header.add(all);
             add(header, BorderLayout.NORTH);
 
@@ -99,13 +96,13 @@ public class Test {
             add(new JScrollPane(content));
         }
 
-        public ArrayList<JCheckBox> getCheckBox() {
+        ArrayList<JCheckBox> getCheckBox() {
             return checkBoxes;
         }
 
-        public class ScrollablePane extends JPanel implements Scrollable {
+        public static final class ScrollablePane extends JPanel implements Scrollable {
 
-            public ScrollablePane(LayoutManager layout) {
+            private ScrollablePane(LayoutManager layout) {
                 super(layout);
             }
 
