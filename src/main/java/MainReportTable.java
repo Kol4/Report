@@ -71,7 +71,7 @@ final class MainReportTable extends JFrame {
                 dailyCount = getUsualCount(1, table);
                 usualCount = getUsualCount(2, table);
                 unusualCount = getUsualCount(3, table);
-                if ((dailyCount == 0) || (usualCount == 0) || (unusualCount == 0)) {
+                if ((dailyCount == 0) && (usualCount == 0) && (unusualCount == 0)) {
                     JOptionPane.showMessageDialog(null, "Данные в колонках не выбраны!");
                 } else {
                     HistogramPanel.createAndShowGUI(dailyCount, usualCount, unusualCount);
